@@ -1,0 +1,7 @@
+body {
+    background-color: lightgrey;
+}
+textarea {
+    min-height: 400px;
+    background-color: gray;
+}
