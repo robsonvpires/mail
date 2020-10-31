@@ -4,11 +4,11 @@
 {% block body %}
     <h2>{{ request.user.email }}</h2>
     
-    <button class="btn btn-sm btn-outline-primary" id="inbox">Inbox</button>
-    <button class="btn btn-sm btn-outline-primary" id="compose">Compose</button>
-    <button class="btn btn-sm btn-outline-primary" id="sent">Sent</button>
-    <button class="btn btn-sm btn-outline-primary" id="archived">Archived</button>        
-    <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a> 
+    <button class="btn" id="inbox">Inbox</button>
+    <button class="btn" id="compose">Compose</button>
+    <button class="btn" id="sent">Sent</button>
+    <button class="btn" id="archived">Archived</button>        
+    <a class="btn" href="{% url 'logout' %}">Log Out</a> 
     <hr>
     
     <div id="emails-view">
@@ -32,7 +32,7 @@
             <div class="form-group">
                 <textarea class="form-control" id="compose-body"></textarea>
             </div>
-            <input type="submit" class="btn btn-primary" value="Send"/>            
+            <input type="submit" class="btn" value="Send"/>            
         </form>
     </div>
 {% endblock %}

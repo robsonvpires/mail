@@ -1,31 +1,31 @@
-document.addEventListener('DOMContentLoaded', function () {
-
+document.addEventListener('DOMContentLoaded', function() {
+  
     // Use buttons to toggle between views
     document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
     document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
     document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
     document.querySelector('#compose').addEventListener('click', compose_email);
-
-    document.querySelector('#compose-form').onsubmit = () => {
   
-        const recipients = document.querySelector('#compose-recipients').value
-        const subject = document.querySelector('#compose-subject').value;
-        const body = document.querySelector('#compose-body').value;
-
-        fetch('/emails', {
-            method: 'POST',
-            body: JSON.stringify({recipients, subject, body})
-        })
-            .then(response => response.json())
-            .then(() => {  
-                load_mailbox('sent');
-            })
-
-        return false;
-    }
-
     // By default, load the inbox
     load_mailbox('inbox');
+  
+    document.querySelector('#compose-form').addEventListener("submit" , (event) => {
+        event.preventDefault();
+    
+        fetch('/emails',
+        {
+            method: 'POST',  
+            body: JSON.stringify({
+                recipients: document.querySelector('#compose-recipients').value,
+                subject: document.querySelector('#compose-subject').value,
+                body: document.querySelector('#compose-body').value
+            })    
+        })
+        .then(response => response.json())
+        .then(() => {
+            load_mailbox('sent');
+        });
+    }); 
 });
 
 function compose_email( event, recipients = '', subject = '', body = '') {
@@ -117,15 +117,15 @@ function load_email(email_origin, email_content) {
     email_time.innerHTML = `<div>Date: ${email_content.timestamp}</div>`;
 
     const button_reply = document.createElement("button");
-    button_reply.innerHTML = "Reply";
-    button_reply.className = "btn btn-sm btn-outline-primary";
+    button_reply.innerHTML = "<i></i>Reply";
+    button_reply.className = "btn";
     
     button_reply.addEventListener('click', function(event) {
         let subject = email_content.subject
         if (!email_content.subject.substring(0,4) !== 'Re: ') {
             subject = `Re: ${subject}`
         }
-        let body = `On ${email_content.timestamp}, \n ${email_content.sender} sent: \n ${email_content.body} \n ---------------------------- \n `
+        let body = `On ${email_content.timestamp}, \n ${email_content.sender} wrote:finalversion ${email_content.body} \n ---------------------------- \n `
         let recipient = email_content.sender;
         compose_email(event, recipient, subject, body)
     });
@@ -137,8 +137,8 @@ function load_email(email_origin, email_content) {
 
     if (email_origin === "inbox") {
         const button_archive = document.createElement("button");
-        button_archive.innerHTML = "Archive"
-        button_archive.className = "btn btn-sm btn-outline-primary"
+        button_archive.innerHTML = "<i></i>Archive"
+        button_archive.className = "btn"
         button_archive.addEventListener('click', function() {
             fetch(`/emails/${email_content.id}`, {
                 method: 'PUT',
@@ -153,7 +153,7 @@ function load_email(email_origin, email_content) {
     else if (email_origin === "archive") {
         const button_unarchive = document.createElement("button");
         button_unarchive.innerHTML = "Unarchive"
-        button_unarchive.className = "btn btn-sm btn-outline-primary"
+        button_unarchive.className = "btn"
         button_unarchive.addEventListener('click', function() {
             fetch(`/emails/${email_content.id}`, {
                 method: 'PUT',

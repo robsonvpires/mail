@@ -1,10 +1,16 @@
 body {
-    font: Arial;
+    font-family: Tahoma, Geneva, sans-serif;
+    background-color:whitesmoke;
 }
+
 textarea {
     min-height: 250px;
 }
 
 .single-email{
-    padding: 10px;
+    padding: 5px;
+    margin: 5px;;
+}
+.single-email:hover {
+    cursor: pointer;
 }
